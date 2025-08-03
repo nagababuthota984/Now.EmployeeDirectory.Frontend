@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 import './App.css';
@@ -32,6 +32,7 @@ const Subtitle = styled.p`
 `;
 
 function App() {
+  const [inputValue, setInputValue] = useState('');
   const [messages, setMessages] = useState<Message[]>([
     {
       id: uuidv4(),
@@ -40,6 +41,8 @@ function App() {
       timestamp: new Date(),
     },
   ]);
+  const [isListening, setIsListening] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSendMessage = useCallback(async (text: string) => {
     // Add user message to chat
@@ -51,6 +54,7 @@ function App() {
     };
     
     setMessages((prevMessages) => [...prevMessages, userMessage]);
+    setInputValue('');
     
     // Show typing indicator or loading state here if desired
     
@@ -82,6 +86,20 @@ function App() {
     }
   }, []);
 
+  // Function to update input value from speech recognition
+  const handleTranscriptChange = useCallback((transcript: string) => {
+    setInputValue(transcript);
+    // Focus the input when transcript changes
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
+  // Toggle listening state
+  const handleListeningChange = useCallback((listening: boolean) => {
+    setIsListening(listening);
+  }, []);
+
   return (
     <AppContainer>
       <Header>
@@ -89,8 +107,19 @@ function App() {
         <Subtitle>Ask me anything about our employees</Subtitle>
       </Header>
       
-      <Chat messages={messages} onSendMessage={handleSendMessage} />
-      <VoiceRecognition onCommand={handleSendMessage} />
+      <Chat 
+        messages={messages} 
+        onSendMessage={handleSendMessage}
+        inputValue={inputValue}
+        setInputValue={setInputValue}
+        isListening={isListening}
+        inputRef={inputRef}
+      />
+      <VoiceRecognition 
+        onCommand={handleSendMessage}
+        onTranscriptChange={handleTranscriptChange}
+        onListeningChange={handleListeningChange}
+      />
     </AppContainer>
   );
 }

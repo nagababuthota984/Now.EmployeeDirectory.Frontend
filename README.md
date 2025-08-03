@@ -1,6 +1,8 @@
 # Employee Directory Frontend
 
-A minimalistic ChatGPT-like interface for an employee directory. This application provides both chat and voice interfaces to interact with the employee directory.
+A minimalistic ChatGPT-like interface for a## License
+
+MITe directory. This application provides both chat and voice interfaces to interact with the employee directory.
 
 ## Features
 
@@ -56,8 +58,11 @@ npm run build
 
 - Type questions or commands in the chat interface
 - Click the microphone button to use voice commands
-- Speak clearly into your microphone
+- Speak clearly into your microphone to see real-time speech-to-text conversion
 - Click the microphone button again to stop recording and send the command
+- Toggle "Auto-Send" to automatically send the transcript when you stop speaking
+- Use the "Send" button to manually send the final transcript
+- Use the "Clear" button to discard the current transcript and start over
 
 ## Backend Integration
 
@@ -66,22 +71,6 @@ This frontend communicates with a Model Context Protocol (MCP) server backend. I
 ## License
 
 MIT
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
