@@ -1,10 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, Dispatch, SetStateAction, RefObject } from 'react';
 import styled from 'styled-components';
 import { Message } from '../types';
 
 interface ChatProps {
   messages: Message[];
   onSendMessage: (message: string) => void;
+  inputValue: string;
+  setInputValue: Dispatch<SetStateAction<string>>;
+  isListening: boolean;
+  inputRef: RefObject<HTMLInputElement | null>;
 }
 
 const ChatContainer = styled.div`
@@ -50,15 +54,22 @@ const InputContainer = styled.div`
   border-top: 1px solid #ddd;
 `;
 
-const Input = styled.input`
+const Input = styled.input<{ $isListening: boolean }>`
   flex: 1;
   padding: 10px 15px;
   border: none;
   border-radius: 20px;
-  background-color: #f1f1f1;
+  background-color: ${({ $isListening }) => $isListening ? '#f8f9fa' : '#f1f1f1'};
   outline: none;
+  transition: all 0.3s ease;
+  box-shadow: ${({ $isListening }) => $isListening ? '0 0 0 2px rgba(255, 79, 79, 0.3)' : 'none'};
+  
   &:focus {
     background-color: #e8e8e8;
+  }
+  
+  &::placeholder {
+    color: ${({ $isListening }) => $isListening ? '#ff4f4f' : '#666'};
   }
 `;
 
@@ -81,14 +92,35 @@ const SendButton = styled.button`
   }
 `;
 
-const Chat: React.FC<ChatProps> = ({ messages, onSendMessage }) => {
-  const [inputValue, setInputValue] = useState('');
+const ListeningIndicator = styled.div`
+  position: absolute;
+  right: 20px;
+  color: #ff4f4f;
+  font-size: 0.8rem;
+  font-style: italic;
+  animation: blink 1.5s infinite;
+  
+  @keyframes blink {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
+  }
+`;
+
+const Chat: React.FC<ChatProps> = ({ 
+  messages, 
+  onSendMessage, 
+  inputValue, 
+  setInputValue, 
+  isListening,
+  inputRef 
+}) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleSend = () => {
     if (inputValue.trim()) {
       onSendMessage(inputValue);
-      setInputValue('');
+      // Note: setInputValue is now handled by the parent component
     }
   };
 
@@ -115,10 +147,12 @@ const Chat: React.FC<ChatProps> = ({ messages, onSendMessage }) => {
       </MessagesContainer>
       <InputContainer>
         <Input
-          placeholder="Type your message..."
+          ref={inputRef}
+          placeholder={isListening ? "Listening... speak clearly" : "Type your message..."}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyPress={handleKeyPress}
+          $isListening={isListening}
         />
         <SendButton onClick={handleSend}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
