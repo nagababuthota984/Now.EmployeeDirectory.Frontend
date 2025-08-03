@@ -206,25 +206,32 @@ const VoiceRecognition: React.FC<VoiceRecognitionProps> = ({
           alert("Speech recognition is not supported in this browser. Please try Chrome, Edge, or Safari.");
           return;
         }
-        
-        // Request microphone permission first
+
+        // If permission is already granted, start listening directly
+        let permissionState = hasMicPermission;
+        if (permissionState === 'granted') {
+          SpeechRecognition.startListening({ 
+            continuous: true,
+            interimResults: true,
+            language: 'en-US'
+          });
+          resetSilenceTimer();
+          return;
+        }
+
+        // Otherwise, request permission
         navigator.mediaDevices.getUserMedia({ audio: true })
           .then(() => {
-            console.log("Starting speech recognition with options:", {
-              continuous: true,
-              interimResults: true,
-              language: 'en-US'
-            });
-            
+            setHasMicPermission('granted');
             SpeechRecognition.startListening({ 
               continuous: true,
               interimResults: true,
               language: 'en-US'
             });
-            
             resetSilenceTimer();
           })
           .catch(err => {
+            setHasMicPermission('denied');
             console.error("Microphone access error:", err);
             alert("Failed to access microphone. Please check your microphone permissions and try again.");
           });
