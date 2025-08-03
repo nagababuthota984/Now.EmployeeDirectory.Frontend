@@ -1,8 +1,6 @@
 # Employee Directory Frontend
 
-A minimalistic ChatGPT-like interface for a## License
-
-MITe directory. This application provides both chat and voice interfaces to interact with the employee directory.
+A minimalistic ChatGPT-like interface for an employee directory. This application provides both chat and voice interfaces to interact with the employee directory.
 
 ## Features
 
