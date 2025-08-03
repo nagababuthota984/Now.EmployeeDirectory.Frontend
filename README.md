@@ -1,15 +1,71 @@
-# Getting Started with Create React App
+# Employee Directory Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A minimalistic ChatGPT-like interface for an employee directory. This application provides both chat and voice interfaces to interact with the employee directory.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- Modern, minimalistic UI similar to ChatGPT
+- Text-based chat interface
+- Voice recognition for hands-free interaction
+- Integration with MCP server backend
 
-### `npm start`
+## Technologies Used
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- React with TypeScript
+- Styled Components for styling
+- Speech Recognition API for voice commands
+- Axios for API communication
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js and npm installed
+- Backend MCP server running
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+   ```
+   npm install
+   ```
+3. Create a `.env` file in the root directory with:
+   ```
+   REACT_APP_API_BASE_URL=http://localhost:3001
+   ```
+   (Replace with your actual MCP server URL)
+
+### Running the Application
+
+Start the development server:
+
+```
+npm start
+```
+
+The application will be available at [http://localhost:3000](http://localhost:3000)
+
+### Building for Production
+
+```
+npm run build
+```
+
+## Usage
+
+- Type questions or commands in the chat interface
+- Click the microphone button to use voice commands
+- Speak clearly into your microphone
+- Click the microphone button again to stop recording and send the command
+
+## Backend Integration
+
+This frontend communicates with a Model Context Protocol (MCP) server backend. It sends text commands from both the chat and voice interfaces to the backend and displays the responses.
+
+## License
+
+MIT
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
